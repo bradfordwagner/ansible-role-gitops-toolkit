@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: ansible-role-abc-
+  generateName: ansible-role-gitops-toolkit-
 spec:
   podGC:
     strategy: OnPodSuccess # delete pods when workflow is successful
