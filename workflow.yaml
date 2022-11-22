@@ -51,7 +51,7 @@ spec:
 #             ]
 #           }
           - { platform: alpine_3.16, ansible_args: [
-                {"platform": "linux/amd64", "ansible_extra_args": ""},
+#               {"platform": "linux/amd64", "ansible_extra_args": ""},
                 {"platform": "linux/arm64", "ansible_extra_args": ""}
               ]
             }
