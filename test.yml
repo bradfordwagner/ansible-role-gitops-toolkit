@@ -10,3 +10,25 @@
       debug:
         msg: '{{ gtk_test_output.stdout }}'
 
+    - name: Get Home clusters yaml stat
+      stat:
+        path : "{{ ansible_env.HOME }}/.gitops-toolkit-clusters.yaml"
+      register: home_clusters_yaml
+
+    - name: Get Home clusters yaml checksum
+      set_fact:
+        home_clusters_sha: "{{ home_clusters_yaml.stat.checksum }}"
+
+    - name: Get Expected clusters yaml stat
+      stat:
+        path : "./tests/expected.clusters.yaml"
+      register: expected_clusters_yaml
+
+    - name: Get Expected clusters yaml checksum
+      set_fact:
+        expected_clusters_sha: "{{ expected_clusters_yaml.stat.checksum }}"
+
+    - name: Compare Shas
+      debug:
+        msg: "Comparing expected clusters yaml vs output"
+      failed_when:  expected_clusters_sha != home_clusters_sha

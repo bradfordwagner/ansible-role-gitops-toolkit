@@ -8,6 +8,7 @@ gtk_mirror: https://github.com/rumstead/gitops-toolkit/releases/download
 gtk_ansible_arch_to_download_arch:
   x86_64: x86_64
   aarch64: arm64
+  arm64: arm64
 
 gtk_enable_corp_ca: false
 # ca download path
