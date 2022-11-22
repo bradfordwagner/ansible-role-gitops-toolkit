@@ -9,6 +9,8 @@ gtk_ansible_arch_to_download_arch:
   x86_64: x86_64
   aarch64: arm64
 
+gtk_binary_name: gitops-toolkit
+
 gtk_checksums:
   # https://github.com/rumstead/gitops-toolkit/releases/download/v0.0.4/checksums.txt
   v0.0.4:
