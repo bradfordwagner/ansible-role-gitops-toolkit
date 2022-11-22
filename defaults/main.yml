@@ -9,6 +9,16 @@ gtk_ansible_arch_to_download_arch:
   x86_64: x86_64
   aarch64: arm64
 
+gtk_enable_corp_ca: false
+# ca download path
+gtk_corp_ca_url: https://mycorpca/cachain.pem
+# location to install ca
+gtk_corp_ca_path: '{{ ansible_env.HOME }}/config/certs/corp_ca.pem'
+gtk_argocd_namespace: argocd
+# allow override of yaml config
+gtk_cluster_template_yaml: clusters.yaml.j2
+gtk_argocd_manifest_path: ./manifests/argo-cd/
+
 gtk_binary_name: gitops-toolkit
 
 gtk_checksums:
