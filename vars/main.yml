@@ -4,6 +4,7 @@
 gtk_platform: '{{ ansible_system }}_{{ gtk_ansible_arch_to_download_arch[ansible_architecture] }}'
 gtk_tgz: gtk_{{ gtk_ver }}_{{ gtk_platform }}.tar.gz
 gtk_tmp_tgz: /tmp/{{ gtk_tgz }}
+# gtk version needs to be replaced because the binary does not include the v, however mirror path does
 gtk_url: '{{ gtk_mirror }}/{{ gtk_ver }}/{{ gtk_binary_name }}_{{ gtk_ver | replace("v", "") }}_{{ gtk_platform }}.tar.gz'
 gtk_checksum: '{{ gtk_checksums[gtk_ver][gtk_platform] }}'
 gtk_install_dir: '{{ gtk_parent_install_dir }}/{{ gtk_binary_name }}-{{ gtk_ver }}'
