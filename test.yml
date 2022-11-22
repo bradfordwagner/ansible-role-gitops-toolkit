@@ -2,13 +2,11 @@
 - hosts: all
   roles:
     - role: '{{ playbook_dir }}'
-      abc_ver: 1.0.1
+      gtk_ver: v0.0.4
   tasks:
-    - name: hello world
+    - command: /usr/local/bin/gitops-toolkit
+      register: gtk_test_output
+    - name: assert binary prints help output
       debug:
-        msg: 'hello world'
-#   - command: /usr/local/bin/abc
-#     register: abc_test_output
-#   - name: assert binary prints help output
-#     debug:
-#       msg: '{{ abc_test_output.stdout }}'
+        msg: '{{ gtk_test_output.stdout }}'
+
