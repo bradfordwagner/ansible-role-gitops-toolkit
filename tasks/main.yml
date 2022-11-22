@@ -57,10 +57,10 @@
     dest: '{{ gtk_installed_link }}'
     state: link
 
-- name: configuring {{ maven_env.HOME/.gitops-toolkit-clusters.yaml }}
+- name: configuring {{ maven_env.HOME }}/.gitops-toolkit-clusters.yaml
   become: true
   become_user: root
   template:
     src: '{{ gtk_cluster_template_yaml }}'
-    dest: '{{ maven_env.HOME/.gitops-toolkit-clusters.yaml }}'
+    dest: '{{ maven_env.HOME }}/.gitops-toolkit-clusters.yaml'
     mode: '{{ item.m | default("0644") }}'
