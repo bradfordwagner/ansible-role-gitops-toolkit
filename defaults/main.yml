@@ -14,7 +14,7 @@ gtk_enable_corp_ca: false
 # ca download path
 gtk_corp_ca_url: https://mycorpca/cachain.pem
 # location to install ca
-gtk_corp_ca_path: '{{ ansible_env.HOME }}/config/certs/corp_ca.pem'
+gtk_corp_ca_path: '{{ ansible_env.HOME }}/config/certs'
 gtk_argocd_namespace: argocd
 # allow override of yaml config
 gtk_cluster_template_yaml: clusters.yaml.j2
