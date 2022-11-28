@@ -3,10 +3,11 @@
   roles:
     - role: '{{ playbook_dir }}'
       gtk_ver: v0.0.4
+      # generally the following does not need to be set
       gtk_argocd:
         namespace: override-namespace
         manifest:
-          dir: "/tmp/argocd_manifest"
+          dir: "/tmp/argocd_manifest" # required override as it will take the user name ie root/username
   tasks:
     - name: assert binaries are runnable
       command: "{{ item }}"
