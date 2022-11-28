@@ -2,7 +2,6 @@
 clusters:
   - name: dev
     network: localclusters
-    volumes:
     envs:
       http_proxy: "@all"
       https_proxy: "@all"
@@ -14,13 +13,13 @@ clusters:
       k3s-arg: "--tls-san=k3d-dev-serverlb@server:*"
     labels:
       kubernetes.cnp.io/cluster.name: dev
+      kubernetes.cnp.io/environment: dev
       kubernetes.cnp.io/cluster.jurisdiction: k3d
       kubernetes.cnp.io/cluster.region: muse2
       kubernetes.cnp.io/cluster.segment: multitenant
-      kubernetes.cnp.io/environment: dev
+  
   - name: tst
     network: localclusters
-    volumes:
     envs:
       http_proxy: "@all"
       https_proxy: "@all"
@@ -36,9 +35,9 @@ clusters:
       kubernetes.cnp.io/cluster.region: muse2
       kubernetes.cnp.io/cluster.segment: multitenant
       kubernetes.cnp.io/environment: tst
+  
   - name: qa
     network: localclusters
-    volumes:
     envs:
       http_proxy: "@all"
       https_proxy: "@all"
@@ -54,16 +53,9 @@ clusters:
       kubernetes.cnp.io/cluster.region: musw2
       kubernetes.cnp.io/cluster.segment: multitenant
       kubernetes.cnp.io/environment: qa
+  
   - name: admin
     network: localclusters
-    gitOps:
-      namespace: "argocd"
-      port: "8080"
-      manifestPath: "./manifests/argo-cd/"
-      credentials:
-        username: admin
-        password: admin1234
-    volumes:
     envs:
       http_proxy: "@all"
       https_proxy: "@all"
@@ -73,4 +65,14 @@ clusters:
       no_proxy: "@all"
     additionalArgs:
       k3s-arg: "--tls-san=k3d-admin-serverlb@server:*"
+    labels:
+      kubernetes.cnp.io/cluster.name: admin
+    gitOps:
+      namespace: argocd
+      port: "8080"
+      manifestPath: "/Users/bwagner/deploy_argocd/"
+      credentials:
+        password: admin1234
+        username: admin
+
 

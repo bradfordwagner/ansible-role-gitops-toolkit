@@ -15,12 +15,49 @@ gtk_enable_corp_ca: false
 gtk_corp_ca_url: https://mycorpca/cachain.pem
 # location to install ca
 gtk_corp_ca_path: '{{ ansible_env.HOME }}/config/certs'
-gtk_argocd_namespace: argocd
 # allow override of yaml config
 gtk_cluster_template_yaml: clusters.yaml.j2
-gtk_argocd_manifest_path: ./manifests/argo-cd/
 
 gtk_binary_name: gitops-toolkit
+
+gtk_argocd:
+  namespace: argocd
+  manifest:
+    dir: "{{ ansible_env.HOME }}/deploy_argocd"
+    sub_path: ""
+    git:
+      enabled: true
+      repo: git@github.com:bradfordwagner/deploy-argocd.git
+      version: main
+
+gtk_clusters:
+  dev:
+    labels:
+      kubernetes.cnp.io/environment: dev
+      kubernetes.cnp.io/cluster.jurisdiction: k3d
+      kubernetes.cnp.io/cluster.region: muse2
+      kubernetes.cnp.io/cluster.segment: multitenant
+  tst:
+    labels:
+      kubernetes.cnp.io/cluster.jurisdiction: k3d
+      kubernetes.cnp.io/cluster.region: muse2
+      kubernetes.cnp.io/cluster.segment: multitenant
+      kubernetes.cnp.io/environment: tst
+  qa:
+    labels:
+      kubernetes.cnp.io/cluster.jurisdiction: k3d
+      kubernetes.cnp.io/cluster.region: musw2
+      kubernetes.cnp.io/cluster.segment: multitenant
+      kubernetes.cnp.io/environment: qa
+  admin:
+    labels: {}
+    git_ops:
+      namespace: "{{ gtk_argocd.namespace }}"
+      port: "8080"
+      manifest_path: "{{ ansible_env.HOME }}/deploy_argocd"
+      credentials:
+        username: admin
+        password: admin1234
 
 gtk_checksums:
   # https://github.com/rumstead/gitops-toolkit/releases/download/v0.0.4/checksums.txt

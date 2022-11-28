@@ -1,9 +1,10 @@
 ---
 clusters:
-  - name: dev
+{% for cluster_name, cluster in gtk_clusters.items() %}
+  - name: {{ cluster_name }}
     network: localclusters
-    volumes:
 {% if gtk_enable_corp_ca %}
+    volumes:
       "{{ gtk_corp_ca_file }}": "/etc/ssl/certs/corp.crt"
 {% endif %}
     envs:
@@ -14,75 +15,20 @@ clusters:
       NO_PROXY: "@all"
       no_proxy: "@all"
     additionalArgs:
-      k3s-arg: "--tls-san=k3d-dev-serverlb@server:*"
+      k3s-arg: "--tls-san=k3d-{{ cluster_name }}-serverlb@server:*"
     labels:
-      kubernetes.cnp.io/cluster.name: dev
-      kubernetes.cnp.io/cluster.jurisdiction: k3d
-      kubernetes.cnp.io/cluster.region: muse2
-      kubernetes.cnp.io/cluster.segment: multitenant
-      kubernetes.cnp.io/environment: dev
-  - name: tst
-    network: localclusters
-    volumes:
-{% if gtk_enable_corp_ca %}
-      "{{ gtk_corp_ca_file }}": "/etc/ssl/certs/corp.crt"
-{% endif %}
-    envs:
-      http_proxy: "@all"
-      https_proxy: "@all"
-      HTTP_PROXY: "@all"
-      HTTPS_PROXY: "@all"
-      NO_PROXY: "@all"
-      no_proxy: "@all"
-    additionalArgs:
-      k3s-arg: "--tls-san=k3d-tst-serverlb@server:*"
-    labels:
-      kubernetes.cnp.io/cluster.name: tst
-      kubernetes.cnp.io/cluster.jurisdiction: k3d
-      kubernetes.cnp.io/cluster.region: muse2
-      kubernetes.cnp.io/cluster.segment: multitenant
-      kubernetes.cnp.io/environment: tst
-  - name: qa
-    network: localclusters
-    volumes:
-{% if gtk_enable_corp_ca %}
-      "{{ gtk_corp_ca_file }}": "/etc/ssl/certs/corp.crt"
-{% endif %}
-    envs:
-      http_proxy: "@all"
-      https_proxy: "@all"
-      HTTP_PROXY: "@all"
-      HTTPS_PROXY: "@all"
-      NO_PROXY: "@all"
-      no_proxy: "@all"
-    additionalArgs:
-      k3s-arg: "--tls-san=k3d-qa-serverlb@server:*"
-    labels:
-      kubernetes.cnp.io/cluster.name: qa
-      kubernetes.cnp.io/cluster.jurisdiction: k3d
-      kubernetes.cnp.io/cluster.region: musw2
-      kubernetes.cnp.io/cluster.segment: multitenant
-      kubernetes.cnp.io/environment: qa
-  - name: admin
-    network: localclusters
-    gitOps:
-      namespace: "{{ gtk_argocd_namespace }}"
-      port: "8080"
-      manifestPath: "{{ gtk_argocd_manifest_path }}"
+      kubernetes.cnp.io/cluster.name: {{ cluster_name }}
+  {% for key, value in cluster.labels.items() %}
+    {{ key }}: {{ value }}
+  {% endfor %}
+{% if cluster.git_ops is defined %}
+  gitOps:
+      namespace: {{ cluster.git_ops.namespace }}
+      port: "{{ cluster.git_ops.port }}"
+      manifestPath: "{{ gtk_argocd.manifest.dir }}/{{ gtk_argocd.manifest.sub_path }}"
       credentials:
-        username: admin
-        password: admin1234
-    volumes:
-{% if gtk_enable_corp_ca %}
-      "{{ gtk_corp_ca_file }}": "/etc/ssl/certs/corp.crt"
+        {{ cluster.git_ops.credentials | to_nice_yaml | indent(8) }}
 {% endif %}
-    envs:
-      http_proxy: "@all"
-      https_proxy: "@all"
-      HTTP_PROXY: "@all"
-      HTTPS_PROXY: "@all"
-      NO_PROXY: "@all"
-      no_proxy: "@all"
-    additionalArgs:
-      k3s-arg: "--tls-san=k3d-admin-serverlb@server:*"
+
+{% endfor %}
 

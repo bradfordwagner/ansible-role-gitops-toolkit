@@ -1,19 +1,9 @@
 ---
 # tasks file for gitops-toolkit
-- name: resolve platform specific vars
-  include_vars: '{{ item }}'
-  with_first_found:
-    - files:
-        - '{{ ansible_distribution }}-{{ ansible_distribution_release }}.yml'
-        - '{{ ansible_distribution }}.yml'
-        - '{{ ansible_os_family }}.yml'
-      skip: true
-      paths:
-        - '{{ role_path }}/vars'
 - name: check for {{ gtk_install_dir }}
   become: yes
   stat:
-    path: '{{ gtk_install_dir }}'
+    path: '{{ gtk_installed_exe }}'
   changed_when: False
   register: gtk_binary
 - when: not gtk_binary.stat.exists
@@ -57,18 +47,27 @@
     state: link
 
 # download/install corp certs
-- name: create required dirs
+- name: install corp cacert
   when: gtk_enable_corp_ca
-  file:
-    path: '{{ gtk_corp_ca_path }}'
-    state: directory
-    mode: 0755
-- name: download corporate ca
-  when: gtk_enable_corp_ca
-  ansible.builtin.get_url:
-    url: '{{ gtk_corp_ca_url }}'
-    dest: '{{ gtk_corp_ca_file }}'
-    mode: '0440'
+  block:
+    - name: create required dirs
+      file:
+        path: '{{ gtk_corp_ca_path }}'
+        state: directory
+        mode: 0755
+    - name: download corporate ca
+      when: gtk_enable_corp_ca
+      ansible.builtin.get_url:
+        url: '{{ gtk_corp_ca_url }}'
+        dest: '{{ gtk_corp_ca_file }}'
+        mode: '0440'
+
+- name: install argocd deploy manifest - {{ gtk_argocd.manifest.git.repo }}@{{ gtk_argocd.manifest.git.version }}
+  when: gtk_argocd.manifest.git.enabled
+  git:
+    repo: "{{ gtk_argocd.manifest.git.repo }}"
+    version: "{{ gtk_argocd.manifest.git.version }}"
+    dest: "{{ gtk_argocd.manifest.dir }}"
 
 - name: configuring {{ ansible_env.HOME }}/.gitops-toolkit-clusters.yaml
   become: true
