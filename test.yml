@@ -8,6 +8,8 @@
         namespace: override-namespace
         manifest:
           dir: "/tmp/argocd_manifest" # required override as it will take the user name ie root/username
+          git:
+            enabled: false # disable - builder image does not have git installed - oops!
   tasks:
     - name: assert binaries are runnable
       command: "{{ item }}"
