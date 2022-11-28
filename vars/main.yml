@@ -11,3 +11,13 @@ gtk_install_dir: '{{ gtk_parent_install_dir }}/{{ gtk_binary_name }}-{{ gtk_ver 
 gtk_installed_exe: '{{ gtk_install_dir }}/{{ gtk_binary_name }}'
 gtk_installed_link: '{{ gtk_parent_install_dir }}/bin/{{ gtk_binary_name }}'
 gtk_corp_ca_file: '{{ gtk_corp_ca_path }}/corp_ca.pem'
+
+gtk_argocd_defaults:
+  namespace: argocd
+  manifest:
+    dir: "{{ ansible_env.HOME }}/deploy_argocd"
+    sub_path: ""
+    git:
+      enabled: true
+      repo: git@github.com:bradfordwagner/deploy-argocd.git
+      version: main

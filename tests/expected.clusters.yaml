@@ -68,9 +68,9 @@ clusters:
     labels:
       kubernetes.cnp.io/cluster.name: admin
     gitOps:
-      namespace: argocd
+      namespace: override-namespace
       port: "8080"
-      manifestPath: "/Users/bwagner/deploy_argocd/"
+      manifestPath: "/tmp/argocd_manifest/"
       credentials:
         password: admin1234
         username: admin

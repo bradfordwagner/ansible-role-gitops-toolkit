@@ -1,5 +1,7 @@
 ---
 # tasks file for gitops-toolkit
+- set_fact:
+    _gtk_argocd: "{{ gtk_argocd_defaults | combine(gtk_argocd, recursive=True) }}"
 - name: check for {{ gtk_install_dir }}
   become: yes
   stat:
@@ -62,12 +64,12 @@
         dest: '{{ gtk_corp_ca_file }}'
         mode: '0440'
 
-- name: install argocd deploy manifest - {{ gtk_argocd.manifest.git.repo }}@{{ gtk_argocd.manifest.git.version }}
-  when: gtk_argocd.manifest.git.enabled
+- name: install argocd deploy manifest - {{ _gtk_argocd.manifest.git.repo }}@{{ _gtk_argocd.manifest.git.version }}
+  when: _gtk_argocd.manifest.git.enabled
   git:
-    repo: "{{ gtk_argocd.manifest.git.repo }}"
-    version: "{{ gtk_argocd.manifest.git.version }}"
-    dest: "{{ gtk_argocd.manifest.dir }}"
+    repo: "{{ _gtk_argocd.manifest.git.repo }}"
+    version: "{{ _gtk_argocd.manifest.git.version }}"
+    dest: "{{ _gtk_argocd.manifest.dir }}"
 
 - name: configuring {{ ansible_env.HOME }}/.gitops-toolkit-clusters.yaml
   become: true
