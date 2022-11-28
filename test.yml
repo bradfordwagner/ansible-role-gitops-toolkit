@@ -4,11 +4,14 @@
     - role: '{{ playbook_dir }}'
       gtk_ver: v0.0.4
   tasks:
-    - command: /usr/local/bin/gitops-toolkit
-      register: gtk_test_output
-    - name: assert binary prints help output
-      debug:
-        msg: '{{ gtk_test_output.stdout }}'
+    - name: assert binaries are runnable
+      command: "{{ item }}"
+      register: exec
+      failed_when: exec.rc > 0
+      loop:
+        - /usr/local/bin/gitops-toolkit
+        - /usr/local/bin/kubectl
+        - /usr/local/bin/argocd
 
     - name: Get Home clusters yaml stat
       stat:
@@ -27,8 +30,4 @@
     - name: Get Expected clusters yaml checksum
       set_fact:
         expected_clusters_sha: "{{ expected_clusters_yaml.stat.checksum }}"
-
-    - name: Compare Shas
-      debug:
-        msg: "Comparing expected clusters yaml vs output"
       failed_when:  expected_clusters_sha != home_clusters_sha

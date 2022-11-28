@@ -9,4 +9,6 @@ galaxy_info:
 
 dependencies:
   - andrewrothstein.unarchive-deps
+  - andrewrothstein.kubectl
+  - andrewrothstein.argocd
 
