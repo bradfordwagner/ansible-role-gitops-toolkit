@@ -10,6 +10,45 @@
           dir: "/tmp/argocd_manifest" # required override as it will take the user name ie root/username
           git:
             enabled: false # disable - builder image does not have git installed - oops!
+      gtk_clusters:
+        dev-disabled:
+          enabled: false
+          labels:
+            kubernetes.cnp.io/environment: dev
+            kubernetes.cnp.io/cluster.jurisdiction: k3d
+            kubernetes.cnp.io/cluster.region: musw2
+            kubernetes.cnp.io/cluster.segment: multitenant
+        dev:
+          enabled: true
+          labels:
+            kubernetes.cnp.io/environment: dev
+            kubernetes.cnp.io/cluster.jurisdiction: k3d
+            kubernetes.cnp.io/cluster.region: muse2
+            kubernetes.cnp.io/cluster.segment: multitenant
+        tst:
+          enabled: true
+          labels:
+            kubernetes.cnp.io/cluster.jurisdiction: k3d
+            kubernetes.cnp.io/cluster.region: muse2
+            kubernetes.cnp.io/cluster.segment: multitenant
+            kubernetes.cnp.io/environment: tst
+        qa:
+          enabled: true
+          labels:
+            kubernetes.cnp.io/cluster.jurisdiction: k3d
+            kubernetes.cnp.io/cluster.region: musw2
+            kubernetes.cnp.io/cluster.segment: multitenant
+            kubernetes.cnp.io/environment: qa
+        admin:
+          enabled: true
+          labels: {}
+          git_ops:
+            namespace: "{{ gtk_argocd.namespace }}"
+            port: "8080"
+            manifest_path: "{{ ansible_env.HOME }}/deploy_argocd"
+            credentials:
+              username: admin
+              password: admin1234
   tasks:
     - name: assert binaries are runnable
       command: "{{ item }}"

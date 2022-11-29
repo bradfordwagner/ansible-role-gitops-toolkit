@@ -1,6 +1,7 @@
 ---
 clusters:
 {% for cluster_name, cluster in gtk_clusters.items() %}
+{% if cluster.enabled %}
   - name: {{ cluster_name }}
     network: localclusters
 {% if gtk_enable_corp_ca %}
@@ -28,6 +29,7 @@ clusters:
       manifestPath: "{{ _gtk_argocd.manifest.dir }}/{{ _gtk_argocd.manifest.sub_path }}"
       credentials:
         {{ cluster.git_ops.credentials | to_nice_yaml | indent(8) }}
+{% endif %}
 {% endif %}
 
 {% endfor %}

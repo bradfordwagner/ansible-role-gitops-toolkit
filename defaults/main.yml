@@ -33,24 +33,28 @@ gtk_argocd:
 
 gtk_clusters:
   dev:
+    enabled: true
     labels:
       kubernetes.cnp.io/environment: dev
       kubernetes.cnp.io/cluster.jurisdiction: k3d
       kubernetes.cnp.io/cluster.region: muse2
       kubernetes.cnp.io/cluster.segment: multitenant
   tst:
+    enabled: true
     labels:
       kubernetes.cnp.io/cluster.jurisdiction: k3d
       kubernetes.cnp.io/cluster.region: muse2
       kubernetes.cnp.io/cluster.segment: multitenant
       kubernetes.cnp.io/environment: tst
   qa:
+    enabled: true
     labels:
       kubernetes.cnp.io/cluster.jurisdiction: k3d
       kubernetes.cnp.io/cluster.region: musw2
       kubernetes.cnp.io/cluster.segment: multitenant
       kubernetes.cnp.io/environment: qa
   admin:
+    enabled: true
     labels: {}
     git_ops:
       namespace: "{{ gtk_argocd.namespace }}"
