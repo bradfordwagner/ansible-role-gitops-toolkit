@@ -1,0 +1,69 @@
+---
+- name: get existing clusters
+  shell: >
+    k3d cluster list -o json
+    | jq -r 'map(.name)'
+  register: existing_clusters_json
+- set_fact:
+    existing_clusters: "{{ existing_clusters_json.stdout }}"
+    enabled_clusters: "{{ gtk_clusters | dict2items | selectattr('value.enabled', '==', True) | map(attribute='key')}}"
+    disabled_clusters: "{{ gtk_clusters | dict2items | selectattr('value.enabled', '==', False) | map(attribute='key')}}"
+    admin_clusters: "{{ gtk_clusters | dict2items | selectattr('value.git_ops', 'defined') | map(attribute='key')}}"
+- set_fact:
+    first_admin_cluster: "{{ admin_clusters | first }}"
+    new_non_admin_clusters: "{{ enabled_clusters | difference(admin_clusters) | difference(existing_clusters) }}"
+    existing_disabled_clusters: "{{ disabled_clusters | intersect(existing_clusters) }}"
+- set_fact:
+    should_rebuild_admin: "{{ new_non_admin_clusters | length > 0 }}"
+    should_run_gtk: "{{ enabled_clusters | difference(existing_clusters) | length > 0 }}"
+
+- name: delete admin clusters
+  command: k3d cluster delete {{ item }}
+  ignore_errors: yes
+  loop: "{{ admin_clusters }}"
+  when: should_rebuild_admin
+- name: stop port forwarding
+  command: pkill -f port-forward
+  ignore_errors: yes
+
+- name: delete existing disabled clusters
+  command: k3d cluster delete {{ item }}
+  ignore_errors: yes
+  loop: "{{ existing_disabled_clusters }}"
+  when: existing_disabled_clusters | length > 0
+
+- name: build clusters
+  shell: gitops-toolkit clusters
+  register: gtk_exec_res
+  until: gtk_exec_res.rc == 0
+  retries: 5
+  when: should_run_gtk
+- debug:
+    var: gtk_exec_res.stderr_lines
+  when: should_run_gtk
+
+- name: create context dir
+  file:
+    path: '{{ _gtk_start_clusters.context_output_dir }}'
+    state: directory
+    mode: 0755
+- name: issue kube ctx
+  shell: k3d kubeconfig get {{ item }} > {{ _gtk_start_clusters.context_output_dir }}/k3d_{{ item }}_ctx
+  loop: "{{ enabled_clusters }}"
+- name: set kubeconfig to admin cluster
+  file:
+    path: '{{ _gtk_start_clusters.context_output_dir }}/kubeconfig'
+    state: link
+    src: '{{ _gtk_start_clusters.context_output_dir }}/k3d_{{ first_admin_cluster }}_ctx'
+    force: true
+  when: _gtk_start_clusters.set_kube_config
+- name: set kubeconfig to admin cluster
+  file:
+    path: '{{ _gtk_start_clusters.context_output_dir }}/kubeconfig'
+    state: link
+    src: '{{ _gtk_start_clusters.context_output_dir }}/k3d_{{ first_admin_cluster }}_ctx'
+    force: true
+  when: _gtk_start_clusters.set_kube_config
+- name: set namespace on config to argocd
+  shell: kubectl config set-context $(kubectl config current-context) --namespace={{ gtk_clusters[first_admin_cluster].git_ops.namespace }}
+  when: _gtk_start_clusters.set_kube_config
