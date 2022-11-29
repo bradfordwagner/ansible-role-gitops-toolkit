@@ -20,7 +20,10 @@ gtk_cluster_template_yaml: clusters.yaml.j2
 
 gtk_binary_name: gitops-toolkit
 
-gtk_start_clusters: false
+gtk_start_clusters:
+  enabled: false
+  context_output_dir: "{{ ansible_env.HOME }}/.kube"
+  set_kube_config: true
 
 gtk_install_dependent_binaries: true
 

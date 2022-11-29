@@ -21,3 +21,8 @@ gtk_argocd_defaults:
       enabled: true
       repo: git@github.com:bradfordwagner/deploy-argocd.git
       version: main
+
+gtk_start_clusters_defaults:
+  enabled: false
+  context_output_dir: "{{ ansible_env.HOME }}/.kube"
+  set_kube_config: true
