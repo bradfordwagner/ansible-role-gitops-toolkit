@@ -4,26 +4,26 @@
     _gtk_argocd: "{{ gtk_argocd_defaults | combine(gtk_argocd, recursive=True) }}"
     _gtk_start_clusters: "{{ gtk_start_clusters_defaults | combine(gtk_start_clusters, recursive=True) }}"
 
-#- include_role:
-#    name: andrewrothstein.unarchive-deps
-#  when: gtk_install_dependent_binaries
-#- include_role:
-#    name: andrewrothstein.kubectl
-#  when: gtk_install_dependent_binaries
-#- include_role:
-#    name: andrewrothstein.argocd
-#  when: gtk_install_dependent_binaries
-#
-#- include_tasks: install_gtk.yml
-#- include_tasks: install_cacert.yml
-#
-#- name: install argocd deploy manifest - {{ _gtk_argocd.manifest.git.repo }}@{{ _gtk_argocd.manifest.git.version }}
-#  when: _gtk_argocd.manifest.git.enabled
-#  git:
-#    repo: "{{ _gtk_argocd.manifest.git.repo }}"
-#    version: "{{ _gtk_argocd.manifest.git.version }}"
-#    dest: "{{ _gtk_argocd.manifest.dir }}"
-#
+- include_role:
+    name: andrewrothstein.unarchive-deps
+  when: gtk_install_dependent_binaries
+- include_role:
+    name: andrewrothstein.kubectl
+  when: gtk_install_dependent_binaries
+- include_role:
+    name: andrewrothstein.argocd
+  when: gtk_install_dependent_binaries
+
+- include_tasks: install_gtk.yml
+- include_tasks: install_cacert.yml
+
+- name: install argocd deploy manifest - {{ _gtk_argocd.manifest.git.repo }}@{{ _gtk_argocd.manifest.git.version }}
+  when: _gtk_argocd.manifest.git.enabled
+  git:
+    repo: "{{ _gtk_argocd.manifest.git.repo }}"
+    version: "{{ _gtk_argocd.manifest.git.version }}"
+    dest: "{{ _gtk_argocd.manifest.dir }}"
+
 - name: configuring {{ ansible_env.HOME }}/.gitops-toolkit-clusters.yaml
   become: true
   become_user: root
