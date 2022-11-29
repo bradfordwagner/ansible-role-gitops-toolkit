@@ -22,9 +22,6 @@
   ignore_errors: yes
   loop: "{{ admin_clusters }}"
   when: should_rebuild_admin
-- name: stop port forwarding
-  command: pkill -f port-forward
-  ignore_errors: yes
 
 - name: delete existing disabled clusters
   command: k3d cluster delete {{ item }}
