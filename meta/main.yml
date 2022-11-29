@@ -7,8 +7,4 @@ galaxy_info:
   min_ansible_version: 2.1
   galaxy_tags: [gitops-toolkit]
 
-dependencies:
-  - andrewrothstein.unarchive-deps
-  - andrewrothstein.kubectl
-  - andrewrothstein.argocd
 

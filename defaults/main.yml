@@ -20,6 +20,10 @@ gtk_cluster_template_yaml: clusters.yaml.j2
 
 gtk_binary_name: gitops-toolkit
 
+gtk_start_clusters: false
+
+gtk_install_dependent_binaries: true
+
 # same as vars/main.yml - gtk_argocd_defaults
 gtk_argocd:
   namespace: argocd

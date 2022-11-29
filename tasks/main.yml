@@ -2,6 +2,17 @@
 # tasks file for gitops-toolkit
 - set_fact:
     _gtk_argocd: "{{ gtk_argocd_defaults | combine(gtk_argocd, recursive=True) }}"
+
+- include_role:
+    name: andrewrothstein.unarchive-deps
+  when: gtk_install_dependent_binaries
+- include_role:
+    name: andrewrothstein.kubectl
+  when: gtk_install_dependent_binaries
+- include_role:
+    name: andrewrothstein.argocd
+  when: gtk_install_dependent_binaries
+
 - include_tasks: install_gtk.yml
 - include_tasks: install_cacert.yml
 
