@@ -1,0 +1,16 @@
+---
+# download/install corp certs
+- name: install corp cacert
+  when: gtk_enable_corp_ca
+  block:
+    - name: create required dirs
+      file:
+        path: '{{ gtk_corp_ca_path }}'
+        state: directory
+        mode: 0755
+    - name: download corporate ca
+      when: gtk_enable_corp_ca
+      ansible.builtin.get_url:
+        url: '{{ gtk_corp_ca_url }}'
+        dest: '{{ gtk_corp_ca_file }}'
+        mode: '0440'

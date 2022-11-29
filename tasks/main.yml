@@ -2,67 +2,8 @@
 # tasks file for gitops-toolkit
 - set_fact:
     _gtk_argocd: "{{ gtk_argocd_defaults | combine(gtk_argocd, recursive=True) }}"
-- name: check for {{ gtk_install_dir }}
-  become: yes
-  stat:
-    path: '{{ gtk_installed_exe }}'
-  changed_when: False
-  register: gtk_binary
-- when: not gtk_binary.stat.exists
-  block:
-    - name: download {{ gtk_url }}...
-      become: yes
-      become_user: root
-      get_url:
-        url: '{{ gtk_url }}'
-        dest: '{{ gtk_tmp_tgz }}'
-        checksum: '{{ gtk_checksum }}'
-        mode: 0644
-    - name: mkdir {{ gtk_install_dir }}
-      become: yes
-      become_user: root
-      file:
-        path: '{{ gtk_install_dir }}'
-        state: directory
-        mode: 0755
-    - name: unarchive {{ gtk_tmp_tgz }}
-      become: yes
-      become_user: root
-      unarchive:
-        remote_src: yes
-        src: '{{ gtk_tmp_tgz }}'
-        dest: '{{ gtk_install_dir }}'
-        creates: '{{ gtk_installed_exe }}'
-  always:
-    - name: rm {{ gtk_tmp_tgz }}
-      become: yes
-      become_user: root
-      file:
-        path: '{{ gtk_tmp_tgz }}'
-        state: absent
-- name: link {{ gtk_installed_link }} to {{ gtk_installed_exe }}
-  become: yes
-  become_user: root
-  file:
-    src: '{{ gtk_installed_exe }}'
-    dest: '{{ gtk_installed_link }}'
-    state: link
-
-# download/install corp certs
-- name: install corp cacert
-  when: gtk_enable_corp_ca
-  block:
-    - name: create required dirs
-      file:
-        path: '{{ gtk_corp_ca_path }}'
-        state: directory
-        mode: 0755
-    - name: download corporate ca
-      when: gtk_enable_corp_ca
-      ansible.builtin.get_url:
-        url: '{{ gtk_corp_ca_url }}'
-        dest: '{{ gtk_corp_ca_file }}'
-        mode: '0440'
+- include_tasks: install_gtk.yml
+- include_tasks: install_cacert.yml
 
 - name: install argocd deploy manifest - {{ _gtk_argocd.manifest.git.repo }}@{{ _gtk_argocd.manifest.git.version }}
   when: _gtk_argocd.manifest.git.enabled
