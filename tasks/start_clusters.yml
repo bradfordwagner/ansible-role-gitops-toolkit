@@ -49,14 +49,7 @@
   loop: "{{ enabled_clusters }}"
 - name: set kubeconfig to admin cluster
   file:
-    path: '{{ _gtk_start_clusters.context_output_dir }}/kubeconfig'
-    state: link
-    src: '{{ _gtk_start_clusters.context_output_dir }}/k3d_{{ first_admin_cluster }}_ctx'
-    force: true
-  when: _gtk_start_clusters.set_kube_config
-- name: set kubeconfig to admin cluster
-  file:
-    path: '{{ _gtk_start_clusters.context_output_dir }}/kubeconfig'
+    path: '{{ _gtk_start_clusters.context_output_dir }}/config'
     state: link
     src: '{{ _gtk_start_clusters.context_output_dir }}/k3d_{{ first_admin_cluster }}_ctx'
     force: true
