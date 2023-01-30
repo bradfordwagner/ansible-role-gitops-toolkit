@@ -13,6 +13,7 @@ gtk_ansible_arch_to_download_arch:
 gtk_enable_corp_ca: false
 # ca download path
 gtk_corp_ca_url: https://mycorpca/cachain.pem
+gtk_corp_ca_use_proxy: false
 # location to install ca
 gtk_corp_ca_path: '{{ ansible_env.HOME }}/config/certs'
 # allow override of yaml config
@@ -37,6 +38,10 @@ gtk_argocd:
       enabled: true
       repo: git@github.com:bradfordwagner/deploy-argocd.git
       version: main
+
+gtk_clusters_proxy:
+  all_proxy: ""
+  no_proxy: ""
 
 gtk_clusters:
   dev:
