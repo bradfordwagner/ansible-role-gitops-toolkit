@@ -17,7 +17,7 @@
 - include_tasks: install_gtk.yml
 - include_tasks: install_cacert.yml
 
-- name: install argocd deploy manifest - {{ _gtk_argocd.manifest.git.repo }}@{{ _gtk_argocd.manifest.git.version }}
+- name: cloning argocd deployment manifest from {{ _gtk_argocd.manifest.git.repo }}@{{ _gtk_argocd.manifest.git.version }} to {{ _gtk_argocd.manifest.dir }}
   when: _gtk_argocd.manifest.git.enabled
   git:
     repo: "{{ _gtk_argocd.manifest.git.repo }}"

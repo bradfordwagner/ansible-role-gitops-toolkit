@@ -1,8 +1,8 @@
 ---
 - name: get existing clusters
-  shell: >
-    k3d cluster list -o json
-    | jq -r 'map(.name)'
+  shell: |
+    k3d cluster list -o json \
+      | jq -r 'map(.name)'
   register: existing_clusters_json
 - set_fact:
     existing_clusters: "{{ existing_clusters_json.stdout }}"
@@ -17,19 +17,19 @@
     should_rebuild_admin: "{{ new_non_admin_clusters | length > 0 }}"
     should_run_gtk: "{{ enabled_clusters | difference(existing_clusters) | length > 0 }}"
 
-- name: delete admin clusters
+- name: deleting {{ admin_clusters | length }}  admin clusters
   command: k3d cluster delete {{ item }}
-  ignore_errors: yes
+  ignore_errors: true
   loop: "{{ admin_clusters }}"
   when: should_rebuild_admin
 
-- name: delete existing disabled clusters
+- name: deleting {{ existing_disabled_clusters | length }}  existing disabled clusters
   command: k3d cluster delete {{ item }}
-  ignore_errors: yes
+  ignore_errors: true
   loop: "{{ existing_disabled_clusters }}"
   when: existing_disabled_clusters | length > 0
 
-- name: build clusters
+- name: building clusters
   shell: gitops-toolkit clusters
   register: gtk_exec_res
   until: gtk_exec_res.rc == 0
@@ -39,12 +39,12 @@
     var: gtk_exec_res.stderr_lines
   when: should_run_gtk
 
-- name: create context dir
+- name: creating contexts dir {{ _gtk_start_clusters.context_output_dir }}
   file:
     path: '{{ _gtk_start_clusters.context_output_dir }}'
     state: directory
     mode: 0755
-- name: issue kube ctx
+- name: issuing {{ enabled_clusters | length }}  kube contexts into {{ _gtk_start_clusters.context_output_dir }}
   shell: k3d kubeconfig get {{ item }} > {{ _gtk_start_clusters.context_output_dir }}/k3d_{{ item }}_ctx
   loop: "{{ enabled_clusters }}"
 - name: set kubeconfig to admin cluster
@@ -54,6 +54,10 @@
     src: '{{ _gtk_start_clusters.context_output_dir }}/k3d_{{ first_admin_cluster }}_ctx'
     force: true
   when: _gtk_start_clusters.set_kube_config
-- name: set namespace on config to argocd
-  shell: kubectl config set-context $(kubectl config current-context) --namespace={{ gtk_clusters[first_admin_cluster].git_ops.namespace }}
+- name: set namespace={{ gtk_clusters[first_admin_cluster].git_ops.namespace }} on config to argocd
+  shell: |
+    kubectl \
+      config \
+      set-context $(kubectl config current-context) \
+      --namespace={{ gtk_clusters[first_admin_cluster].git_ops.namespace }}
   when: _gtk_start_clusters.set_kube_config
