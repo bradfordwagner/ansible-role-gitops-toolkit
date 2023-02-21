@@ -1,14 +1,14 @@
 ---
 - name: check for {{ gtk_install_dir }}
-  become: yes
+  become: true
   stat:
     path: '{{ gtk_installed_exe }}'
-  changed_when: False
+  changed_when: false
   register: gtk_binary
 - when: not gtk_binary.stat.exists
   block:
     - name: download {{ gtk_url }}...
-      become: yes
+      become: true
       become_user: root
       get_url:
         url: '{{ gtk_url }}'
@@ -16,29 +16,29 @@
         checksum: '{{ gtk_checksum }}'
         mode: 0644
     - name: mkdir {{ gtk_install_dir }}
-      become: yes
+      become: true
       become_user: root
       file:
         path: '{{ gtk_install_dir }}'
         state: directory
         mode: 0755
     - name: unarchive {{ gtk_tmp_tgz }}
-      become: yes
+      become: true
       become_user: root
       unarchive:
-        remote_src: yes
+        remote_src: true
         src: '{{ gtk_tmp_tgz }}'
         dest: '{{ gtk_install_dir }}'
         creates: '{{ gtk_installed_exe }}'
   always:
     - name: rm {{ gtk_tmp_tgz }}
-      become: yes
+      become: true
       become_user: root
       file:
         path: '{{ gtk_tmp_tgz }}'
         state: absent
 - name: link {{ gtk_installed_link }} to {{ gtk_installed_exe }}
-  become: yes
+  become: true
   become_user: root
   file:
     src: '{{ gtk_installed_exe }}'
