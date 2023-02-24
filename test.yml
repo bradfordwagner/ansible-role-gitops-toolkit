@@ -7,9 +7,11 @@
       gtk_argocd:
         namespace: override-namespace
         manifest:
-          dir: "/tmp/argocd_manifest" # required override as it will take the user name ie root/username
+          # required override as it will take the user name ie root/username
+          dir: "/tmp/argocd_manifest"
           git:
-            enabled: false # disable - builder image does not have git installed - oops!
+            # disable - builder image does not have git installed - oops!
+            enabled: false
       gtk_clusters:
         dev-disabled:
           enabled: false
@@ -61,7 +63,7 @@
 
     - name: Get Home clusters yaml stat
       stat:
-        path : "{{ ansible_env.HOME }}/.gitops-toolkit-clusters.yaml"
+        path: "{{ ansible_env.HOME }}/.gitops-toolkit-clusters.yaml"
       register: home_clusters_yaml
 
     - name: Get Home clusters yaml checksum
@@ -70,10 +72,10 @@
 
     - name: Get Expected clusters yaml stat
       stat:
-        path : "./tests/expected.clusters.yaml"
+        path: "./tests/expected.clusters.yaml"
       register: expected_clusters_yaml
 
     - name: Get Expected clusters yaml checksum
       set_fact:
         expected_clusters_sha: "{{ expected_clusters_yaml.stat.checksum }}"
-      failed_when:  expected_clusters_sha != home_clusters_sha
+      failed_when: expected_clusters_sha != home_clusters_sha

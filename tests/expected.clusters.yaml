@@ -18,7 +18,7 @@ clusters:
       kubernetes.cnp.io/cluster.jurisdiction: k3d
       kubernetes.cnp.io/cluster.region: muse2
       kubernetes.cnp.io/cluster.segment: multitenant
-  
+
   - name: tst
     network: localclusters
     envs:
@@ -36,7 +36,7 @@ clusters:
       kubernetes.cnp.io/cluster.region: muse2
       kubernetes.cnp.io/cluster.segment: multitenant
       kubernetes.cnp.io/environment: tst
-  
+
   - name: qa
     network: localclusters
     envs:
@@ -54,7 +54,7 @@ clusters:
       kubernetes.cnp.io/cluster.region: musw2
       kubernetes.cnp.io/cluster.segment: multitenant
       kubernetes.cnp.io/environment: qa
-  
+
   - name: admin
     network: localclusters
     envs:
@@ -75,5 +75,3 @@ clusters:
       credentials:
         password: admin1234
         username: admin
-
-

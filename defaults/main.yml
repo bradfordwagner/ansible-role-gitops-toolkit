@@ -89,4 +89,3 @@ gtk_checksums:
     Linux_x86_64: sha256:444b84f27dca6d3ee8fbe4491ebbfded6f27d7fc8d759ef4b0b7965e3bead89c
     # https://github.com/rumstead/gitops-toolkit/releases/download/v0.0.4/gitops-toolkit_0.0.4_Windows_x86_64.tar.gz
     Windows_x86_64: sha256:ce1d7347ea20a5a5ec0905c866725c2c777013bceb149c3124341aba2ada3e0a
-
