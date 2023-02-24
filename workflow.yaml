@@ -1,10 +1,12 @@
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
   generateName: ansible-role-gitops-toolkit-
 spec:
   podGC:
-    strategy: OnPodSuccess # delete pods when workflow is successful
+    # delete pods when workflow is successful
+    strategy: OnPodSuccess
   entrypoint: main
   arguments:
     parameters:
@@ -45,33 +47,39 @@ spec:
           name: flavor-ansible-role-template
           template: main
         withItems:
-          - { platform: alpine_3.15, ansible_args: [
-                {"platform": "linux/amd64", "ansible_extra_args": ""},
-                {"platform": "linux/arm64", "ansible_extra_args": ""}
-              ]
-            }
-          - { platform: alpine_3.16, ansible_args: [
-                {"platform": "linux/amd64", "ansible_extra_args": ""},
-                {"platform": "linux/arm64", "ansible_extra_args": ""}
-              ]
-            }
-          - { platform: debian_bullseye, ansible_args: [
-                {"platform": "linux/amd64", "ansible_extra_args": ""},
-                {"platform": "linux/arm64", "ansible_extra_args": ""}
-              ]
-            }
-          - { platform: debian_bookworm, ansible_args: [
-                {"platform": "linux/amd64", "ansible_extra_args": ""},
-                {"platform": "linux/arm64", "ansible_extra_args": ""}
-              ]
-            }
-          - { platform: ubuntu_focal, ansible_args: [
-                {"platform": "linux/amd64", "ansible_extra_args": ""},
-                {"platform": "linux/arm64", "ansible_extra_args": ""}
-              ]
-            }
-          - { platform: ubuntu_kinetic, ansible_args: [
-                {"platform": "linux/amd64", "ansible_extra_args": ""},
-                {"platform": "linux/arm64", "ansible_extra_args": ""}
-              ]
-            }
+          - platform: alpine_3.15
+            ansible_args:
+              - platform: linux/amd64
+                ansible_extra_args: ""
+              - platform: linux/arm64
+                ansible_extra_args: ""
+          - platform: alpine_3.16
+            ansible_args:
+              - platform: linux/amd64
+                ansible_extra_args: ""
+              - platform: linux/arm64
+                ansible_extra_args: ""
+          - platform: debian_bullseye
+            ansible_args:
+              - platform: linux/amd64
+                ansible_extra_args: ""
+              - platform: linux/arm64
+                ansible_extra_args: ""
+          - platform: debian_bookworm
+            ansible_args:
+              - platform: linux/amd64
+                ansible_extra_args: ""
+              - platform: linux/arm64
+                ansible_extra_args: ""
+          - platform: ubuntu_focal
+            ansible_args:
+              - platform: linux/amd64
+                ansible_extra_args: ""
+              - platform: linux/arm64
+                ansible_extra_args: ""
+          - platform: ubuntu_kinetic
+            ansible_args:
+              - platform: linux/amd64
+                ansible_extra_args: ""
+              - platform: linux/arm64
+                ansible_extra_args: ""
