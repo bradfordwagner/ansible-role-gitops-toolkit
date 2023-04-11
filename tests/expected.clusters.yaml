@@ -19,6 +19,9 @@ clusters:
       kubernetes.cnp.io/cluster.region: muse2
       kubernetes.cnp.io/cluster.segment: multitenant
 
+    annotations:
+      test-annotation: hi/friends
+
   - name: tst
     network: localclusters
     envs:
@@ -68,6 +71,10 @@ clusters:
       k3s-arg: "--tls-san=k3d-admin-serverlb@server:*"
     labels:
       kubernetes.cnp.io/cluster.name: admin
+
+    annotations:
+      kubernetes.cnp.io/test: test/annotation
+
     gitOps:
       namespace: override-namespace
       port: "8080"
@@ -75,3 +82,30 @@ clusters:
       credentials:
         password: admin1234
         username: admin
+
+
+  - name: admin2
+    network: localclusters
+    envs:
+      http_proxy: "@all"
+      https_proxy: "@all"
+      HTTP_PROXY: "@all"
+      HTTPS_PROXY: "@all"
+      NO_PROXY: "@all"
+      no_proxy: "@all"
+    additionalArgs:
+      k3s-arg: "--tls-san=k3d-admin2-serverlb@server:*"
+    labels:
+      kubernetes.cnp.io/cluster.name: admin2
+
+    annotations:
+
+    gitOps:
+      namespace: override-namespace
+      port: "8080"
+      manifestPath: "/tmp/argocd_manifest/"
+      credentials:
+        password: admin1234
+        username: admin
+
+

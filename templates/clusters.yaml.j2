@@ -19,11 +19,17 @@ clusters:
       k3s-arg: "--tls-san=k3d-{{ cluster_name }}-serverlb@server:*"
     labels:
       kubernetes.cnp.io/cluster.name: {{ cluster_name }}
-  {% for key, value in cluster.labels.items() %}
-    {{ key }}: {{ value }}
-  {% endfor %}
-{% if cluster.git_ops is defined %}
-  gitOps:
+{% for key, value in cluster.labels.items() %}
+      {{+ key }}: {{ value }}
+{% endfor %}
+{%- if cluster.annotations is defined +%}
+    annotations:
+{% for key, value in cluster.annotations.items() %}
+      {{+ key }}: {{ value }}
+{% endfor %}
+{%- endif %}
+{%- if cluster.git_ops is defined +%}
+    gitOps:
       namespace: {{ cluster.git_ops.namespace }}
       port: "{{ cluster.git_ops.port }}"
       manifestPath: "{{ _gtk_argocd.manifest.dir }}/{{ _gtk_argocd.manifest.sub_path }}"

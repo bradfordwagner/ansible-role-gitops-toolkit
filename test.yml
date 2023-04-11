@@ -2,7 +2,7 @@
 - hosts: all
   roles:
     - role: '{{ playbook_dir }}'
-      gtk_ver: v0.0.4
+      gtk_ver: v0.0.6
       # generally the following does not need to be set
       gtk_argocd:
         namespace: override-namespace
@@ -27,6 +27,8 @@
             kubernetes.cnp.io/cluster.jurisdiction: k3d
             kubernetes.cnp.io/cluster.region: muse2
             kubernetes.cnp.io/cluster.segment: multitenant
+          annotations:
+            test-annotation: hi/friends
         tst:
           enabled: true
           labels:
@@ -44,6 +46,19 @@
         admin:
           enabled: true
           labels: {}
+          annotations:
+            kubernetes.cnp.io/test: test/annotation
+          git_ops:
+            namespace: "{{ gtk_argocd.namespace }}"
+            port: "8080"
+            manifest_path: "{{ ansible_env.HOME }}/deploy_argocd"
+            credentials:
+              username: admin
+              password: admin1234
+        admin2:
+          enabled: true
+          labels: {}
+          annotations: {}
           git_ops:
             namespace: "{{ gtk_argocd.namespace }}"
             port: "8080"
