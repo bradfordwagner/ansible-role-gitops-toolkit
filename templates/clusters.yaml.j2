@@ -16,7 +16,13 @@ clusters:
       NO_PROXY: "{{ gtk_clusters_proxy.no_proxy }}@all"
       no_proxy: "{{ gtk_clusters_proxy.no_proxy }}@all"
     additionalArgs:
-      k3s-arg: "--tls-san=k3d-{{ cluster_name }}-serverlb@server:*"
+      - --k3s-arg=--tls-san=k3d-{{ cluster_name }}-serverlb@server:*
+{%- if cluster.k3d_extra_args is defined +%}
+{% for value in cluster.k3d_extra_args %}
+      - {{+ value }}
+{% endfor %}
+{%- endif %}
+
     labels:
       kubernetes.cnp.io/cluster.name: {{ cluster_name }}
 {% for key, value in cluster.labels.items() %}
