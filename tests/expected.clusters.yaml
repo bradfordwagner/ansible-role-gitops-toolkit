@@ -11,7 +11,7 @@ clusters:
       NO_PROXY: "@all"
       no_proxy: "@all"
     additionalArgs:
-      k3s-arg: "--tls-san=k3d-dev-serverlb@server:*"
+      - --k3s-arg=--tls-san=k3d-dev-serverlb@server:*
     labels:
       kubernetes.cnp.io/cluster.name: dev
       kubernetes.cnp.io/environment: dev
@@ -32,7 +32,7 @@ clusters:
       NO_PROXY: "@all"
       no_proxy: "@all"
     additionalArgs:
-      k3s-arg: "--tls-san=k3d-tst-serverlb@server:*"
+      - --k3s-arg=--tls-san=k3d-tst-serverlb@server:*
     labels:
       kubernetes.cnp.io/cluster.name: tst
       kubernetes.cnp.io/cluster.jurisdiction: k3d
@@ -50,7 +50,7 @@ clusters:
       NO_PROXY: "@all"
       no_proxy: "@all"
     additionalArgs:
-      k3s-arg: "--tls-san=k3d-qa-serverlb@server:*"
+      - --k3s-arg=--tls-san=k3d-qa-serverlb@server:*
     labels:
       kubernetes.cnp.io/cluster.name: qa
       kubernetes.cnp.io/cluster.jurisdiction: k3d
@@ -68,7 +68,7 @@ clusters:
       NO_PROXY: "@all"
       no_proxy: "@all"
     additionalArgs:
-      k3s-arg: "--tls-san=k3d-admin-serverlb@server:*"
+      - --k3s-arg=--tls-san=k3d-admin-serverlb@server:*
     labels:
       kubernetes.cnp.io/cluster.name: admin
 
@@ -94,7 +94,7 @@ clusters:
       NO_PROXY: "@all"
       no_proxy: "@all"
     additionalArgs:
-      k3s-arg: "--tls-san=k3d-admin2-serverlb@server:*"
+      - --k3s-arg=--tls-san=k3d-admin2-serverlb@server:*
     labels:
       kubernetes.cnp.io/cluster.name: admin2
 
