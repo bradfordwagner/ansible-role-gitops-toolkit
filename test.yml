@@ -2,7 +2,6 @@
 - hosts: all
   roles:
     - role: '{{ playbook_dir }}'
-      gtk_ver: v0.0.6
       # generally the following does not need to be set
       gtk_argocd:
         namespace: override-namespace
