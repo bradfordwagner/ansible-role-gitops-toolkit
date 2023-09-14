@@ -5,7 +5,7 @@
     _gtk_start_clusters: "{{ gtk_start_clusters_defaults | combine(gtk_start_clusters, recursive=True) }}"
 
 - include_role:
-    name: andrewrothstein.unarchive-deps
+    name: andrewrothstein.unarchivedeps
   when: gtk_install_dependent_binaries
 - include_role:
     name: andrewrothstein.kubectl

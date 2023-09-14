@@ -24,7 +24,7 @@ dl_ver() {
     local lchecksums="$DIR/${APP}-${ver}-${checksums}"
     if [ ! -e $lchecksums ];
     then
-        wget -q -O $lchecksums $url
+        curl -sSLf -o $lchecksums $url
     fi
 
     printf "  # %s\n" $url
@@ -33,9 +33,11 @@ dl_ver() {
     dl $ver $lchecksums Darwin arm64
     dl $ver $lchecksums Darwin x86_64
     dl $ver $lchecksums Linux arm64
+    dl $ver $lchecksums Linux i386
     dl $ver $lchecksums Linux x86_64
+    dl $ver $lchecksums Windows arm64
+    dl $ver $lchecksums Windows i386
     dl $ver $lchecksums Windows x86_64
 }
 
-dl_ver ${1:-v1.0.0}
-
+dl_ver ${1:-v1.0.1}
