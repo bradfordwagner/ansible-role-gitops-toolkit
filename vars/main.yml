@@ -29,4 +29,4 @@ gtk_start_clusters_defaults:
   context_output_dir: "{{ ansible_env.HOME }}/.kube"
   set_kube_config: true
 
-is_wsl: '{{ true if ansible_env.WSL_DISTRO_NAME is defined else false }}'
+is_wsl: '{{ ansible_env.WSL_DISTRO_NAME is defined }}'
