@@ -26,14 +26,9 @@
 
 - name: configuring {{ ansible_env.HOME }}/.gitops-toolkit-clusters.yaml
   become: '{{ false if is_wsl else true }}'
-  # We can remove become_user as root is the default become_user
-  # https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
-  # become_user: root
   template:
     src: '{{ gtk_cluster_template_yaml }}'
     dest: '{{ ansible_env.HOME }}/.gitops-toolkit-clusters.yaml'
-    # Adding a leading zero (for example, 0755) works sometimes, but can fail in loops and some other circumstances.
-    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/get_url_module.html#parameter-mode
     mode: '{{ item.m | default("644") }}'
 
 - include_tasks: start_clusters.yml

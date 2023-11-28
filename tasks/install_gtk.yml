@@ -9,32 +9,19 @@
   block:
     - name: download {{ gtk_url }}...
       become: '{{ false if is_wsl else true }}'
-      # We can remove become_user as root is the default become_user
-      # https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
-      # become_user: root
       get_url:
         url: '{{ gtk_url }}'
         dest: '{{ gtk_tmp_tgz }}'
         checksum: '{{ gtk_checksum }}'
-        # Adding a leading zero (for example, 0755) works sometimes, but can fail in loops and some other circumstances.
-        # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/get_url_module.html#parameter-mode
         mode: "{{ '647' if is_wsl else '644' }}"
     - name: mkdir {{ gtk_install_dir }}
       become: true
-      # We can remove become_user as root is the default become_user
-      # https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
-      # become_user: root
       file:
         path: '{{ gtk_install_dir }}'
         state: directory
-        # Adding a leading zero (for example, 0755) works sometimes, but can fail in loops and some other circumstances.
-        # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/get_url_module.html#parameter-mode
         mode: '755'
     - name: unarchive {{ gtk_tmp_tgz }}
       become: true
-      # We can remove become_user as root is the default become_user
-      # https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
-      # become_user: root
       unarchive:
         remote_src: true
         src: '{{ gtk_tmp_tgz }}'
@@ -49,9 +36,6 @@
         state: absent
 - name: link {{ gtk_installed_link }} to {{ gtk_installed_exe }}
   become: true
-  # We can remove become_user as root is the default become_user
-  # https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
-  # become_user: root
   file:
     src: '{{ gtk_installed_exe }}'
     dest: '{{ gtk_installed_link }}'

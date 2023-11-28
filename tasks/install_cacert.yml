@@ -7,8 +7,6 @@
       file:
         path: '{{ gtk_corp_ca_path }}'
         state: directory
-        # Adding a leading zero (for example, 0755) works sometimes, but can fail in loops and some other circumstances.
-        # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/get_url_module.html#parameter-mode
         mode: '755'
     - name: download corporate ca
       when: gtk_enable_corp_ca
@@ -16,6 +14,4 @@
         use_proxy: '{{ gtk_corp_ca_use_proxy }}'
         url: '{{ gtk_corp_ca_url }}'
         dest: '{{ gtk_corp_ca_file }}'
-        # Adding a leading zero (for example, 0755) works sometimes, but can fail in loops and some other circumstances.
-        # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/get_url_module.html#parameter-mode
         mode: '440'
