@@ -107,18 +107,6 @@ gtk_checksums:
     Windows_i386: sha256:a6172b22857be01c8f3bb796960c6c1606590bd59f8d00ef9ba4950d36344ac3
     # https://github.com/rumstead/gitops-toolkit/releases/download/v1.0.1/gitops-toolkit_Windows_x86_64.tar.gz
     Windows_x86_64: sha256:9435ab5eaa6562be978859460ed375ae1aa65a19e64af65abd0f5af4006f4371
-  # https://github.com/rumstead/gitops-toolkit/releases/download/v1.0.0/checksums.txt
-  v1.0.2:
-    # https://github.com/rumstead/gitops-toolkit/releases/download/v1.0.2/gitops-toolkit_Darwin_arm64.tar.gz
-    Darwin_arm64: sha256:e8d6e39c3d5baf94de0bae58d152c382ac272d8e02fd98e87f9458c82d52bce2
-    # https://github.com/rumstead/gitops-toolkit/releases/download/v1.0.2/gitops-toolkit_Darwin_x86_64.tar.gz
-    Darwin_x86_64: sha256:e6783c8fc6c6c10b4f99c7416ef3ea6c36d431aebcadda1752632eb4c1fed667
-    # https://github.com/rumstead/gitops-toolkit/releases/download/v1.0.2/gitops-toolkit_Linux_arm64.tar.gz
-    Linux_arm64: sha256:f59adb6f977e6247ec337c345b5f1666f1932fe0410ce7c4fb183cb71fb1dd61
-    # https://github.com/rumstead/gitops-toolkit/releases/download/v1.0.2/gitops-toolkit_Linux_x86_64.tar.gz
-    Linux_x86_64: sha256:4ec1da22dde1d4cf0a0757493a255bb8e8dd10460aa71ff67e818d20ee51fe40
-    # https://github.com/rumstead/gitops-toolkit/releases/download/v1.0.2/gitops-toolkit_Windows_x86_64.tar.gz
-    Windows_x86_64: sha256:a156e0b6e425ec4f46cf57f1b6dd26c0968530d453ae544dd81e1f73dfb36181
   # https://github.com/rumstead/gitops-toolkit/releases/download/v1.1.0/checksums.txt
   v1.1.0:
     # https://github.com/rumstead/gitops-toolkit/releases/download/v1.1.0/gitops-toolkit_Darwin_arm64.tar.gz
