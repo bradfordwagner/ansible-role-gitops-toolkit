@@ -37,6 +37,7 @@ gtk_start_clusters_defaults:
   enabled: false
   context_output_dir: "{{ ansible_env.HOME }}/.kube"
   set_kube_config: true
+  retries: 5
 
 is_wsl: '{{ ansible_env.WSL_DISTRO_NAME is defined }}'
 # if not wsl set to localhost else 0.0.0.0
