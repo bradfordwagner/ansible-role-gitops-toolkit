@@ -33,7 +33,7 @@
   shell: gitops-toolkit clusters
   register: gtk_exec_res
   until: gtk_exec_res.rc == 0
-  retries: 5
+  retries: 1
   when: should_run_gtk
 - debug:
     var: gtk_exec_res.stderr_lines

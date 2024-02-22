@@ -7,12 +7,28 @@
   register: gtk_binary
 - when: not gtk_binary.stat.exists
   block:
-    - name: download {{ gtk_url }}...
+    # resolve checksum
+    - name: get checksums from {{ gtk_checksum_url }}
+      uri:
+        url: '{{ gtk_checksum_url }}' # https://github.com/rumstead/gitops-toolkit/releases/download/v1.1.2/checksums.txt
+        return_content: yes
+      register: checksum_response
+    - name: set checksum content fact
+      set_fact:
+        checksum_content: "{{ checksum_response.content }}"
+    - name: resolve checksum
+      set_fact:
+        checksum: "{{ item.split()[0] }}"
+      when: gtk_tgz in item
+      with_items: "{{ checksum_content.split('\n') }}"
+
+    # download and install
+    - name: download {{ gtk_tgz_url }}
       become: '{{ false if is_wsl else true }}'
       get_url:
-        url: '{{ gtk_url }}'
+        url: '{{ gtk_tgz_url }}'
         dest: '{{ gtk_tmp_tgz }}'
-        checksum: '{{ gtk_checksum }}'
+        checksum: 'sha256:{{ checksum }}'
         mode: "{{ '647' if is_wsl else '644' }}"
     - name: mkdir {{ gtk_install_dir }}
       become: true
@@ -27,6 +43,7 @@
         src: '{{ gtk_tmp_tgz }}'
         dest: '{{ gtk_install_dir }}'
         creates: '{{ gtk_installed_exe }}'
+  # cleanup tgz file
   always:
     - name: rm {{ gtk_tmp_tgz }}
       become: true
@@ -40,3 +57,4 @@
     src: '{{ gtk_installed_exe }}'
     dest: '{{ gtk_installed_link }}'
     state: link
+    force: true # override existing symlink

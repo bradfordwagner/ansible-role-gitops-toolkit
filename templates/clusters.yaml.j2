@@ -39,6 +39,7 @@ clusters:
       namespace: {{ cluster.git_ops.namespace }}
       port: "{{ cluster.git_ops.port }}"
       manifestPath: "{{ _gtk_argocd.manifest.dir }}/{{ _gtk_argocd.manifest.sub_path }}"
+      bindAddress: {{ gtk_bind_address }}
       credentials:
         {{ cluster.git_ops.credentials | to_nice_yaml | indent(8) }}
 {% endif %}
