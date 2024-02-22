@@ -1,14 +1,23 @@
 ---
-# vars file for gitops-toolkit
+gtk_arch_map:
+  x86_64: x86_64
+  aarch64: arm64
+  arm64: arm64
 
 gtk_os: '{{ ansible_system }}'
 gtk_arch: '{{ gtk_arch_map[ansible_architecture] }}'
 gtk_platform: '{{ gtk_os }}_{{ gtk_arch }}'
-gtk_tgz: gtk_{{ gtk_ver }}_{{ gtk_platform }}.tar.gz
+
+gtk_tgz: gitops-toolkit_{{ gtk_platform }}.tar.gz
 gtk_tmp_tgz: /tmp/{{ gtk_tgz }}
 
-gtk_url: '{{ gtk_mirror }}/{{ gtk_ver }}/{{ gtk_binary_name }}_{{ gtk_platform }}.tar.gz'
-gtk_checksum: '{{ gtk_checksums[gtk_ver][gtk_platform] }}'
+# https://github.com/rumstead/gitops-toolkit/releases/download/v1.1.2
+gtk_url: '{{ gtk_mirror }}/{{ gtk_ver }}'
+# https://github.com/rumstead/gitops-toolkit/releases/download/v1.1.2/checksums.txt
+gtk_checksum_url: '{{ gtk_url }}/checksums.txt'
+# https://github.com/rumstead/gitops-toolkit/releases/download/v1.1.2/gitops-toolkit_Linux_x86_64.tar.gz
+gtk_tgz_url: '{{ gtk_url }}/{{ gtk_tgz }}'
+
 gtk_install_dir: '{{ gtk_parent_install_dir }}/{{ gtk_binary_name }}-{{ gtk_ver }}'
 gtk_installed_exe: '{{ gtk_install_dir }}/{{ gtk_binary_name }}'
 gtk_installed_link: '{{ gtk_parent_install_dir }}/bin/{{ gtk_binary_name }}'
@@ -28,5 +37,8 @@ gtk_start_clusters_defaults:
   enabled: false
   context_output_dir: "{{ ansible_env.HOME }}/.kube"
   set_kube_config: true
+  retries: 5
 
 is_wsl: '{{ ansible_env.WSL_DISTRO_NAME is defined }}'
+# bind address for wsl=0.0.0.0, mac=localhost
+gtk_bind_address: '{{ "localhost" if not is_wsl else "0.0.0.0" }}'
