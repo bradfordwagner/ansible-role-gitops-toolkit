@@ -1,5 +1,7 @@
 name: ansible_role
-on: push
+on:
+  - push
+  - workflow_dispatch
 jobs:
   ansible-role:
     strategy:
