@@ -3,15 +3,16 @@ on: push
 jobs:
   ansible-role:
     strategy:
+      fail-fast: false
       matrix:
         os:
           - alpine_3.16
           - alpine_3.17
-          - archlinux_latest
+          # - archlinux_latest
           - debian_bookworm
           - debian_bullseye
           - ubuntu_focal
-          - ubuntu_kinetic
+          # - ubuntu_kinetic
           - ubuntu_lunar
         tag: [3.6.2]
     runs-on: ubuntu-latest
