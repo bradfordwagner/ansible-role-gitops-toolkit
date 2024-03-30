@@ -31,7 +31,6 @@ jobs:
       matrix:
         build: ${{ fromJSON(needs.config-yaml.outputs.config).builds }}
     container:
-      # image: quay.io/bradfordwagner/ansible:${{ matrix.tag }}-${{ matrix.os }}
       image: ${{ fromJSON(needs.config-yaml.outputs.config).upstream.repo }}:${{ fromJSON(needs.config-yaml.outputs.config).upstream.tag }}-${{ matrix.build.os }}
     steps:
       - name: checkout=self
