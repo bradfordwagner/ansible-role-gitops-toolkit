@@ -1,0 +1,48 @@
+name: ansible_role
+on:
+  - push
+  - workflow_dispatch
+jobs:
+  config-yaml:
+    name: config.yaml
+    runs-on: ubuntu-latest
+    outputs:
+      config: ${{ steps.config.outputs.config }}
+    steps:
+      - uses: actions/checkout@v4
+      # https://github.com/chrisdickinson/setup-yq/blob/latest/action.yml
+      - uses: chrisdickinson/setup-yq@v1.0.1
+        name: yq=v4.43.1
+        with:
+          yq-version: v4.43.1
+      - name: jq=1.7
+        uses: dcarbone/install-jq-action@v2
+        with:
+          version: 1.7
+      - name: export=config
+        id: config
+        run: echo "config=$(yq -oj '.' config.yaml | jq -cr)" >> $GITHUB_OUTPUT
+  ansible-role:
+    name: ${{ matrix.build.os }}
+    needs: config-yaml
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build: ${{ fromJSON(needs.config-yaml.outputs.config).builds }}
+    container:
+      image: ${{ fromJSON(needs.config-yaml.outputs.config).upstream.repo }}:${{ fromJSON(needs.config-yaml.outputs.config).upstream.tag }}-${{ matrix.build.os }}
+    steps:
+      - name: checkout=self
+        uses: actions/checkout@v4
+      - name: task=3.35.1
+        uses: pnorton5432/setup-task@v1
+        with:
+          task-version: 3.35.1
+      - name: checkout=taskfiles
+        uses: actions/checkout@v4
+        with:
+          path: taskfiles
+          repository: bradfordwagner/taskfiles
+      - name: task=branches
+        run: task -t ./taskfiles/tasks/ansible_role.yml
