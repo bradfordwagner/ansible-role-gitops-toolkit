@@ -1,7 +1,7 @@
 # created by init task for use with github actons
 upstream:
   repo: ghcr.io/bradfordwagner/ansible
-  tag: 5.1.2
+  tag: 5.2.0
 builds:
   - os: alpine_3.18
   - os: alpine_3.19
