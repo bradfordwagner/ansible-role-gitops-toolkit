@@ -1,7 +1,8 @@
-name: ansible_role_branches
+name: ansible_role_tags
 on:
-  - push
-  - workflow_dispatch
+  push:
+    tags:
+      - '*'
 jobs:
   config-yaml:
     name: config.yaml
@@ -22,7 +23,7 @@ jobs:
       - name: export=config
         id: config
         run: echo "config=$(yq -oj '.' config.yaml | jq -cr)" >> $GITHUB_OUTPUT
-  ansible-role-branches:
+  ansible-role-tags:
     name: ${{ matrix.build.os }}
     needs: config-yaml
     runs-on: ubuntu-latest
@@ -46,3 +47,15 @@ jobs:
           repository: bradfordwagner/taskfiles
       - name: task=branches
         run: task -t ./taskfiles/tasks/ansible_role.yml
+  ansible-role-tags-publish:
+    name: publish
+    needs: [config-yaml, ansible-role-tags]
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout=self
+        uses: actions/checkout@v4
+      - name: galaxy_publish
+        uses: robertdebock/galaxy-action@1.2.0
+        with:
+          galaxy_api_key: ${{ secrets.GALAXY_TOKEN }}
+          git_branch: ${{ github.ref_name }}
