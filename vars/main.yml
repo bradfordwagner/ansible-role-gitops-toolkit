@@ -41,4 +41,4 @@ gtk_start_clusters_defaults:
 
 is_wsl: '{{ ansible_env.WSL_DISTRO_NAME is defined }}'
 # bind address for wsl=0.0.0.0, mac=localhost
-gtk_bind_address: '{{ "localhost" if not is_wsl else "0.0.0.0" }}'
+gtk_bind_address: '{{ "127.0.0.1" if not is_wsl else "0.0.0.0" }}'

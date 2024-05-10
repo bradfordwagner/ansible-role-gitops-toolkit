@@ -79,7 +79,7 @@ clusters:
       namespace: override-namespace
       port: "8080"
       manifestPath: "/tmp/argocd_manifest/"
-      bindAddress: localhost
+      bindAddress: 127.0.0.1
       credentials:
         password: admin1234
         username: admin
@@ -105,7 +105,7 @@ clusters:
       namespace: override-namespace
       port: "8080"
       manifestPath: "/tmp/argocd_manifest/"
-      bindAddress: localhost
+      bindAddress: 127.0.0.1
       credentials:
         password: admin1234
         username: admin
