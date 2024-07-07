@@ -1,15 +1,48 @@
-# created by init task for use with github actons
-upstream:
-  repo: ghcr.io/bradfordwagner/ansible
-  tag: 5.6.0
+target_repo: ""
 builds:
-  - os: alpine_3.18
-  - os: alpine_3.19
-  - os: archlinux_latest
-  - os: debian_bookworm
-  - os: debian_bookworm-slim
-  - os: rockylinux_8
-  - os: rockylinux_9
-  - os: ubuntu_jammy
-  - os: ubuntu_mantic
-  - os: ubuntu_noble
+    - os: alpine_3.18
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: alpine_3.19
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: alpine_3.20
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: archlinux_latest
+      archs:
+        - linux/amd64
+    - os: debian_bookworm
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: debian_bookworm-slim
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: rockylinux_8
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: rockylinux_9
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: ubuntu_jammy
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: ubuntu_mantic
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: ubuntu_noble
+      archs:
+        - linux/amd64
+        - linux/arm64
+upstream:
+    repo: ghcr.io/bradfordwagner/ansible
+    tag: 5.10.0
