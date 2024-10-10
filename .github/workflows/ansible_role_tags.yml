@@ -8,7 +8,7 @@ env:
 jobs:
   product:
     name: product
-    runs-on: arm64
+    runs-on: ubuntu-latest
     outputs:
       product: ${{ steps.config.outputs.product }}
     steps:
