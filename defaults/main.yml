@@ -76,3 +76,11 @@ gtk_clusters:
       credentials:
         username: admin
         password: admin1234
+      # use mkcert to create self-signed locally trusted certificates
+      certs:
+        - namespace: argocd
+          secret:
+            name: argocd-server-tls
+            key: tls.key
+            cert: tls.crt
+            ca: tls.ca

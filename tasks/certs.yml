@@ -1,0 +1,44 @@
+---
+- set_fact:
+    cert_base_name: '{{ cluster_name }}.{{ cert.namespace }}.{{ cert.secret.name }}'
+    kubeconfig: '{{ _gtk_start_clusters.context_output_dir }}/k3d_{{ cluster_name }}_ctx'
+
+# create cert if dne
+- name: check={{ cert_base_name }}.cert.pem
+  stat:
+    path: '{{ cache_dir }}/{{ cert_base_name }}.cert.pem'
+  changed_when: false
+  register: cert_stat
+- name: mkcert={{ cert_base_name }}
+  when: cert_stat.stat.exists == false
+  environment:
+    CAROOT: '{{ cache_dir }}'
+  shell:
+    chdir: '{{ cache_dir }}'
+    cmd: |
+      mkcert \
+        -cert-file {{ cert_base_name }}.cert.pem \
+        -key-file {{ cert_base_name }}.key.pem \
+        localhost \
+        127.0.0.1 \
+        ::1 \
+        '*.{{ cert.namespace }}.svc' \
+        '*.{{ cert.namespace }}.svc.cluster.local'
+
+- shell:
+    cmd: '{{ item }}'
+    chdir: '{{ cache_dir }}'
+  environment:
+    KUBECONFIG: '{{ kubeconfig }}'
+  loop:
+    - kubectl create namespace {{ cert.namespace }} --dry-run=client -o yaml | kubectl apply -f -
+    - |
+      kubectl get secret -n {{ cert.namespace }} {{ cert.secret.name }} \
+        && kubectl delete secret -n {{ cert.namespace }} {{ cert.secret.name }} \
+        || echo {{ cert.secret.name }} secret not found
+    - |
+      kubectl create secret generic {{ cert.secret.name }} \
+        -n {{ cert.namespace }} \
+        --from-file={{ cert.secret.key }}=./{{ cert_base_name }}.key.pem \
+        --from-file={{ cert.secret.cert }}=./{{ cert_base_name }}.cert.pem \
+        --from-file={{ cert.secret.ca }}=./rootCA.pem
