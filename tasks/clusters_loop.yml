@@ -1,0 +1,26 @@
+---
+- set_fact:
+    cluster: "{{ gtk_clusters[cluster_name] }}"
+
+- set_fact:
+    cache_dir: '{{ lookup("env", "PWD") }}/.cache'
+
+- name: mkdir={{ cache_dir }} (cache_dir)
+  file:
+    path: '{{ cache_dir }}'
+    state: directory
+    mode: '0755'
+
+# create: rootCA.pem, rootCA-key.pem in cache_dir
+- name: mkcert install
+  environment:
+    CAROOT: '{{ cache_dir }}'
+  shell:
+    chdir: '{{ cache_dir }}'
+    cmd: |
+      mkcert -install
+
+- include_tasks: certs.yml
+  loop: "{{ cluster.certs }}"
+  loop_control:
+    loop_var: cert

@@ -61,3 +61,9 @@
       set-context $(kubectl config current-context) \
       --namespace={{ gtk_clusters[first_admin_cluster].git_ops.namespace }}
   when: _gtk_start_clusters.set_kube_config
+
+# generate certs
+- include_tasks: clusters_loop.yml
+  loop_control:
+    loop_var: cluster_name
+  loop: "{{ enabled_clusters }}"

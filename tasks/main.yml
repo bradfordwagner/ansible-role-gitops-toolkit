@@ -13,9 +13,22 @@
 - include_role:
     name: andrewrothstein.argocd
   when: gtk_install_dependent_binaries
+- include_role:
+    name: bradfordwagner.go-releaser-install
+  when: gtk_install_dependent_binaries
+  vars:
+    gri_become_user:
+      become: True
+    gri_installs:
+      # https://github.com/FiloSottile/mkcert/releases
+      - repo: FiloSottile/mkcert
+        tag: '{{ mkcert_version }}'
+        separator: '-'
+        archive_extension: ''
+        is_binary: True
 
 - include_tasks: install_gtk.yml
-- include_tasks: install_cacert.yml
+- include_tasks: install_corp_cacert.yml
 
 - name: cloning argocd deployment manifest from {{ _gtk_argocd.manifest.git.repo }}@{{ _gtk_argocd.manifest.git.version }} to {{ _gtk_argocd.manifest.dir }}
   when: _gtk_argocd.manifest.git.enabled
