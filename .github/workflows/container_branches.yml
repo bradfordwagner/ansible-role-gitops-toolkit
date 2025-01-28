@@ -63,4 +63,4 @@ jobs:
             --index=${{ matrix.product.index }} \
             --version=${version}
 # publish stage
-# flavor=
+# flavor=ansible_role

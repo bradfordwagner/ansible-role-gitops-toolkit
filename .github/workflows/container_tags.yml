@@ -60,4 +60,16 @@ jobs:
             --index=${{ matrix.product.index }} \
             --version=${version}
 # publish stage
-# flavor=
+# flavor=ansible_role
+  ansible-role-publish:
+    name: publish
+    needs: builds
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout=self
+        uses: actions/checkout@v4
+      - name: galaxy_publish
+        uses: robertdebock/galaxy-action@1.2.0
+        with:
+          galaxy_api_key: ${{ secrets.GALAXY_TOKEN }}
+          git_branch: ${{ github.ref_name }}
