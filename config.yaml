@@ -1,35 +1,45 @@
 target_repo: ""
+flavor: ansible_role
 builds:
     - os: alpine_3.18
       archs:
         - linux/amd64
+        - linux/arm64
     - os: alpine_3.19
       archs:
         - linux/amd64
+        - linux/arm64
     - os: alpine_3.20
       archs:
         - linux/amd64
+        - linux/arm64
     - os: archlinux_latest
       archs:
         - linux/amd64
     - os: debian_bookworm
       archs:
         - linux/amd64
+        - linux/arm64
     - os: debian_bookworm-slim
       archs:
         - linux/amd64
+        - linux/arm64
     - os: rockylinux_9
       archs:
         - linux/amd64
+        - linux/arm64
     - os: ubuntu_jammy
       archs:
         - linux/amd64
-    - os: ubuntu_noble
-      archs:
-        - linux/amd64
+        - linux/arm64
     - os: ubuntu_plucky
       archs:
         - linux/amd64
+        - linux/arm64
+    - os: ubuntu_noble
+      archs:
+        - linux/amd64
+        - linux/arm64
 upstream:
     repo: ghcr.io/bradfordwagner/ansible
-    tag: 6.0.1
+    tag: 6.1.0
