@@ -23,7 +23,13 @@
         127.0.0.1 \
         ::1 \
         '*.{{ cert.namespace }}.svc' \
-        '*.{{ cert.namespace }}.svc.cluster.local'
+        '*.{{ cert.namespace }}.svc.cluster.local' \
+        {% if cert.services is defined %}
+        {% for svc in cert.services %}
+        '*.{{ svc }}.{{ cert.namespace }}.svc' \
+        '*.{{ svc }}.{{ cert.namespace }}.svc.cluster.local' \
+        {% endfor %}
+        {% endif %}
 
 - shell:
     cmd: '{{ item }}'

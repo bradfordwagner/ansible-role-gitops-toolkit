@@ -1,15 +1,19 @@
 target_repo: ""
 flavor: ansible_role
 builds:
-    - os: alpine_3.18
-      archs:
-        - linux/amd64
-        - linux/arm64
     - os: alpine_3.19
       archs:
         - linux/amd64
         - linux/arm64
     - os: alpine_3.20
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: alpine_3.21
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: alpine_3.22
       archs:
         - linux/amd64
         - linux/arm64
@@ -42,4 +46,4 @@ builds:
         - linux/arm64
 upstream:
     repo: ghcr.io/bradfordwagner/ansible
-    tag: 6.1.0
+    tag: 6.2.0
