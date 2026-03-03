@@ -38,4 +38,4 @@ builds:
         - linux/arm64
 upstream:
     repo: ghcr.io/bradfordwagner/ansible
-    tag: 6.3.0
+    tag: 6.3.1
