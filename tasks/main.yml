@@ -25,7 +25,7 @@
         tag: '{{ mkcert_version }}'
         separator: '-'
         archive_extension: ''
-        is_binary: True
+        unarchive_format: binary
 
 - include_tasks: install_gtk.yml
 - include_tasks: install_corp_cacert.yml
