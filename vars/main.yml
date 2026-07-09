@@ -39,8 +39,12 @@ gtk_start_clusters_defaults:
   set_kube_config: true
   retries: 5
 
-is_wsl: '{{ ansible_env.WSL_DISTRO_NAME is defined }}'
+# Detect WSL2 via /proc/version (works even when WSL_DISTRO_NAME is not exported)
+# or fall back to the env var for backward compatibility.
+is_wsl: >-
+  {{ ansible_env.WSL_DISTRO_NAME is defined or
+     ("microsoft" in (lookup("file", "/proc/version", errors="ignore") | lower)) }}
 # bind address for wsl=0.0.0.0, mac=localhost
-gtk_bind_address: '{{ "127.0.0.1" if not is_wsl else "0.0.0.0" }}'
+gtk_bind_address: '{{ "127.0.0.1" if not (is_wsl | bool) else "0.0.0.0" }}'
 
 mkcert_version: v1.4.4

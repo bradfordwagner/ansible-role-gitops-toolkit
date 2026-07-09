@@ -29,8 +29,25 @@
   loop: "{{ existing_disabled_clusters }}"
   when: existing_disabled_clusters | length > 0
 
+# WSL2: native Docker does not serve host.docker.internal via DNS, so the ArgoCD
+# agent container (spawned by gitops-toolkit on the k3d network) cannot reach the
+# ArgoCD port-forward using that hostname. CRI_GATEWAY overrides the default in the
+# embedded addClusters.sh script; we set it to the Docker network gateway IP instead.
+# The network must exist before we inspect it, so we pre-create it here.
+- name: ensure k3d docker network exists (WSL2)
+  shell: docker network create --subnet 172.18.0.0/16 localclusters || true
+  when: is_wsl | bool
+
+- name: get docker network gateway for CRI_GATEWAY (WSL2)
+  shell: >-
+    docker network inspect localclusters
+    | python3 -c "import json,sys; print(json.load(sys.stdin)[0]['IPAM']['Config'][0]['Gateway'])"
+  register: gtk_wsl_gateway
+  when: is_wsl | bool
+
 - name: building clusters
   shell: gitops-toolkit clusters
+  environment: "{{ {'CRI_GATEWAY': gtk_wsl_gateway.stdout} if (is_wsl | bool) else {} }}"
   register: gtk_exec_res
   until: gtk_exec_res.rc == 0
   retries: '{{ _gtk_start_clusters.retries }}'
