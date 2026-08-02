@@ -36,11 +36,7 @@ builds:
       archs:
         - linux/amd64
         - linux/arm64
-    - os: ubuntu_plucky
-      archs:
-        - linux/amd64
-        - linux/arm64
-    - os: ubuntu_questing
+    - os: ubuntu_resolute
       archs:
         - linux/amd64
         - linux/arm64
