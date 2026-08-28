@@ -24,14 +24,6 @@ builds:
       archs:
         - linux/amd64
         - linux/arm64
-    - os: debian_forky
-      archs:
-        - linux/amd64
-        - linux/arm64
-    - os: debian_forky-slim
-      archs:
-        - linux/amd64
-        - linux/arm64
     - os: ubuntu_noble
       archs:
         - linux/amd64
