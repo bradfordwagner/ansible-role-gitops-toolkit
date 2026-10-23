@@ -47,7 +47,7 @@ jobs:
           id=docker_configs/${RANDOM}
           mkdir -p $HOME/${id}/.docker
           echo "DOCKER_CONFIG=$HOME/${id}/.docker" >> $GITHUB_ENV
-      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
+      - uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 # v4
         name: login=ghcr.io
         with:
           registry: ghcr.io
