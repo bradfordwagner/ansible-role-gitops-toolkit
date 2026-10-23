@@ -2,7 +2,7 @@
 - name: andrewrothstein.unarchivedeps
   version: 3.2.0
 - name: andrewrothstein.kubectl
-  version: v1.5.5
+  version: v1.5.8
 - name: andrewrothstein.argocd
   version: v1.3.3
 - name: bradfordwagner.go-releaser-install
