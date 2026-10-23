@@ -1,0 +1,12 @@
+name: release
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+jobs:
+  release:
+    if: github.event.pull_request.merged && contains(github.event.pull_request.labels.*.name, 'release')
+    uses: bradfordwagner/renovate/.github/workflows/ansible-role-release.yaml@main
+    permissions:
+      contents: write
+      actions: write
