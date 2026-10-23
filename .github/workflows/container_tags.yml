@@ -70,7 +70,7 @@ jobs:
       - name: checkout=self
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: galaxy_publish
-        uses: robertdebock/galaxy-action@2da9916b23b62d328af9c8814ad5973d68817a7e # 1.2.0
+        uses: robertdebock/galaxy-action@7d89099e09f4385ec4b53eb58c0d120f1ad806dd # 1.2.1
         with:
           galaxy_api_key: ${{ secrets.GALAXY_TOKEN }}
           git_branch: ${{ github.ref_name }}
