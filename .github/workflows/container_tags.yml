@@ -13,7 +13,7 @@ jobs:
     outputs:
       product: ${{ steps.config.outputs.product }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: dagger=0.15.2
         run: |
           curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.15.2 sh
@@ -33,7 +33,7 @@ jobs:
       matrix:
         product: ${{ fromJSON(needs.product.outputs.product) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: dagger=0.15.2
         run: |
           curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.15.2 sh
@@ -45,7 +45,7 @@ jobs:
           id=docker_configs/${RANDOM}
           mkdir -p $HOME/${id}/.docker
           echo "DOCKER_CONFIG=$HOME/${id}/.docker" >> $GITHUB_ENV
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
         name: login=ghcr.io
         with:
           registry: ghcr.io
@@ -68,9 +68,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout=self
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: galaxy_publish
-        uses: robertdebock/galaxy-action@1.2.0
+        uses: robertdebock/galaxy-action@2da9916b23b62d328af9c8814ad5973d68817a7e # 1.2.0
         with:
           galaxy_api_key: ${{ secrets.GALAXY_TOKEN }}
           git_branch: ${{ github.ref_name }}
