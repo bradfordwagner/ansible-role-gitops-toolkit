@@ -47,4 +47,5 @@ is_wsl: >-
 # bind address for wsl=0.0.0.0, mac=localhost
 gtk_bind_address: '{{ "127.0.0.1" if not (is_wsl | bool) else "0.0.0.0" }}'
 
+# renovate: datasource=github-releases depName=FiloSottile/mkcert
 mkcert_version: v1.4.4

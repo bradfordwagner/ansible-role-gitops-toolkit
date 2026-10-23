@@ -57,3 +57,7 @@ Two GitHub Actions workflows build/test/publish the role via the [`bradfordwagne
 For each enabled cluster with `certs` defined, `tasks/start_clusters.yml` includes `tasks/clusters_loop.yml` (installs a local mkcert CA into `./.cache`) → `tasks/certs.yml` (generates a cert per `certs` entry and loads it into the cluster as a k8s Secret via `kubectl`).
 
 `gtk_clusters` (in `defaults/main.yml`) is the central desired-state variable: a dict keyed by cluster name, each entry carrying `enabled`, `labels`, optional `annotations`, optional `git_ops` (marks the cluster as an ArgoCD "admin" cluster and configures the gitOps stanza in the rendered YAML), and optional `certs`. `templates/clusters.yaml.j2` renders this dict into the schema `gitops-toolkit` expects.
+
+## Renovate
+
+Renovate (`bradfordwagner/renovate`, preset `ansible-role`) opens PRs for the version pins marked `# renovate:`, `meta/requirements.yml`, `config.yaml`'s `upstream.tag` and GitHub Actions. A merged PR labeled `release` is tagged with the next patch version and published to Galaxy by `.github/workflows/release.yml`.
