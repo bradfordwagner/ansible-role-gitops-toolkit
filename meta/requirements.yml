@@ -6,4 +6,4 @@
 - name: andrewrothstein.argocd
   version: v1.3.8
 - name: bradfordwagner.go-releaser-install
-  version: 1.5.0
+  version: 1.5.2
