@@ -9,7 +9,7 @@ env:
 jobs:
   product:
     name: product
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       product: ${{ steps.config.outputs.product }}
     steps:
