@@ -14,15 +14,15 @@ jobs:
       product: ${{ steps.config.outputs.product }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: dagger=0.15.2
+      - name: dagger=0.21.11
         run: |
-          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.15.2 sh
+          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.21.11 sh
       - name: dagger=product
         id: config
         run: |
-          # write your own scoped version of the following since https://github.com/bradfordwagner/dagger-container-builds@0.2.0 is not available at this base level
+          # write your own scoped version of the following since https://github.com/bradfordwagner/dagger-container-builds@0.4.1 is not available at this base level
           set -x
-          echo product=$(./bin/dagger -m https://github.com/bradfordwagner/dagger-container-builds@0.2.0 call product-json --src=. --version=${{ env.version }}) >> $GITHUB_OUTPUT
+          echo product=$(./bin/dagger -m https://github.com/bradfordwagner/dagger-container-builds@0.4.1 call product-json --src=. --version=${{ env.version }}) >> $GITHUB_OUTPUT
   builds:
     runs-on: ${{ matrix.product.runner }}
     permissions: write-all
@@ -34,9 +34,9 @@ jobs:
         product: ${{ fromJSON(needs.product.outputs.product) }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: dagger=0.15.2
+      - name: dagger=0.21.11
         run: |
-          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.15.2 sh
+          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.21.11 sh
       
       # work around other runner's logging out removing credentials
       # https://github.com/docker/login-action/issues/173#issuecomment-1079688020
@@ -55,7 +55,7 @@ jobs:
       - name: dagger=build
         id: config
         run: |
-          ./bin/dagger -m https://github.com/bradfordwagner/dagger-container-builds@0.2.0 call build \
+          ./bin/dagger -m https://github.com/bradfordwagner/dagger-container-builds@0.4.1 call build \
             --progress=plain \
             --src=. \
             --index=${{ matrix.product.index }} \
