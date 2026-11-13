@@ -16,6 +16,14 @@ builds:
     - os: archlinux_latest
       archs:
         - linux/amd64
+    - os: debian_bookworm
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: debian_bookworm-slim
+      archs:
+        - linux/amd64
+        - linux/arm64
     - os: debian_trixie
       archs:
         - linux/amd64
