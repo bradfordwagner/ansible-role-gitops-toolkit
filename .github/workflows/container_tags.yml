@@ -4,67 +4,16 @@ on:
     tags:
       - '*'
   workflow_dispatch: {}
-env:
-  version: ${{ github.ref_name }}
 jobs:
-  product:
-    name: product
-    runs-on: ubuntu-26.04
-    outputs:
-      product: ${{ steps.config.outputs.product }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: dagger=0.21.11
-        run: |
-          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.21.11 sh
-      - name: dagger=product
-        id: config
-        run: |
-          # write your own scoped version of the following since https://github.com/bradfordwagner/dagger-container-builds@0.4.1 is not available at this base level
-          set -x
-          echo product=$(./bin/dagger -m https://github.com/bradfordwagner/dagger-container-builds@0.4.1 call product-json --src=. --version=${{ env.version }}) >> $GITHUB_OUTPUT
-  builds:
-    runs-on: ${{ matrix.product.runner }}
-    permissions: write-all
-    needs: product
-    name: ${{ matrix.product.display }}
-    strategy:
-      fail-fast: false
-      matrix:
-        product: ${{ fromJSON(needs.product.outputs.product) }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: dagger=0.21.11
-        run: |
-          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.21.11 sh
-      
-      # work around other runner's logging out removing credentials
-      # https://github.com/docker/login-action/issues/173#issuecomment-1079688020
-      - name: Set DOCKER_CONFIG
-        run: |
-          id=docker_configs/${RANDOM}
-          mkdir -p $HOME/${id}/.docker
-          echo "DOCKER_CONFIG=$HOME/${id}/.docker" >> $GITHUB_ENV
-      - uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4
-        name: login=ghcr.io
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          logout: false
-      - name: dagger=build
-        id: config
-        run: |
-          ./bin/dagger -m https://github.com/bradfordwagner/dagger-container-builds@0.4.1 call build \
-            --progress=plain \
-            --src=. \
-            --index=${{ matrix.product.index }} \
-            --version=${version}
-# publish stage
-# flavor=ansible_role
+  container:
+    uses: bradfordwagner/gh-template-lib/.github/workflows/ansible_role.yml@0.2.0
+    permissions:
+      contents: read
+    with:
+      version: ${{ github.ref_name }}
   ansible-role-publish:
     name: publish
-    needs: builds
+    needs: container
     runs-on: ubuntu-latest
     steps:
       - name: checkout=self
