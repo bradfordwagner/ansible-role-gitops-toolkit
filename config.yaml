@@ -1,4 +1,3 @@
-target_repo: ""
 flavor: ansible_role
 builds:
     - os: alpine_3.22

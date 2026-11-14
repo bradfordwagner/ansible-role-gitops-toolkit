@@ -3,7 +3,10 @@ on:
   push:
     tags:
       - '*'
+  # role releases push the tag with GITHUB_TOKEN (no push event), then dispatch this
   workflow_dispatch: {}
+permissions:
+  contents: read
 jobs:
   container:
     uses: bradfordwagner/gh-template-lib/.github/workflows/ansible_role.yml@0.2.0
@@ -14,10 +17,13 @@ jobs:
   ansible-role-publish:
     name: publish
     needs: container
+    if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
     steps:
       - name: checkout=self
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - name: galaxy_publish
         uses: robertdebock/galaxy-action@7d89099e09f4385ec4b53eb58c0d120f1ad806dd # 1.2.1
         with:
