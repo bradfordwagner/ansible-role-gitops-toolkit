@@ -75,16 +75,6 @@
         - /usr/local/bin/kubectl
         - /usr/local/bin/argocd
 
-    - name: "DEBUG gha-980: kernel, is_wsl, bind address, rendered diff"
-      shell: |
-        cat /proc/version
-        echo "is_wsl={{ is_wsl }} gtk_bind_address={{ gtk_bind_address }}"
-        diff -u ./tests/expected.clusters.yaml {{ ansible_env.HOME }}/.gitops-toolkit-clusters.yaml || true
-      register: gha980
-      changed_when: false
-    - debug:
-        var: gha980.stdout_lines
-
     - name: Get Home clusters yaml stat
       stat:
         path: "{{ ansible_env.HOME }}/.gitops-toolkit-clusters.yaml"
