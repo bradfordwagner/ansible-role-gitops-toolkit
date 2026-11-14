@@ -2,6 +2,8 @@
 - hosts: localhost
   roles:
     - role: '{{ playbook_dir }}'
+      # vars/main.yml derives this from is_wsl; pin it so a WSL2 docker host renders the expected file
+      gtk_bind_address: 127.0.0.1
       # generally the following does not need to be set
       gtk_argocd:
         namespace: override-namespace
