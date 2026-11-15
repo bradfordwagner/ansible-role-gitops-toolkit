@@ -8,7 +8,7 @@ on:
   workflow_dispatch: {}
 jobs:
   container:
-    uses: bradfordwagner/gh-template-lib/.github/workflows/ansible_role.yml@0.2.0
+    uses: bradfordwagner/gh-template-lib/.github/workflows/ansible_role.yml@c11cdace9aa576e0562b2e10e20c8ef29f811a36 # 0.2.0
     permissions:
       contents: read
     with:
